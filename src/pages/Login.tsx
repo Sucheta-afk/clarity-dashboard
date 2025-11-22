@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { LogIn } from "lucide-react";
 import { toast } from "sonner";
@@ -11,12 +11,19 @@ const Login = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) {
-      toast.success("Login successful!");
-      navigate("/dashboard");
-    } else {
-      toast.error("Please enter both email and password");
+    // simple client-side validation (backend will validate for real)
+    if (!email.trim()) {
+      toast.error("Please enter your email");
+      return;
     }
+    if (!password) {
+      toast.error("Please enter your password");
+      return;
+    }
+
+    // TODO: call backend /auth/login -> if success store token & redirect
+    toast.success("Login successful!");
+    navigate("/dashboard");
   };
 
   return (
@@ -28,22 +35,23 @@ const Login = () => {
               <LogIn className="text-primary" size={32} />
             </div>
           </div>
-          
+
           <h1 className="text-3xl font-bold text-center text-foreground mb-2">
-            Welcome Back
+            Log in to your account
           </h1>
-          <p className="text-center text-muted-foreground mb-8">
-            Sign in to access your dashboard
+          <p className="text-center text-muted-foreground mb-6">
+            Enter your credentials to access the Inventory Dashboard
           </p>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                Email Address
+                Email address
               </label>
               <input
                 id="email"
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
@@ -58,6 +66,7 @@ const Login = () => {
               <input
                 id="password"
                 type="password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
@@ -65,10 +74,28 @@ const Login = () => {
               />
             </div>
 
-            <PrimaryButton type="submit" className="mt-6">
-              Sign In
+            <div className="flex items-center justify-between text-sm">
+              <label className="inline-flex items-center gap-2">
+                <input type="checkbox" className="h-4 w-4 rounded border border-border bg-input" />
+                <span className="text-muted-foreground">Remember me</span>
+              </label>
+
+              <Link to="/forgot-password" className="text-primary hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+
+            <PrimaryButton type="submit" className="mt-2 w-full">
+              Log In
             </PrimaryButton>
           </form>
+
+          <p className="text-center text-sm text-muted-foreground mt-5">
+            Don’t have an account?{" "}
+            <Link to="/signup" className="text-primary hover:underline">
+              Create one
+            </Link>
+          </p>
         </div>
       </div>
     </div>

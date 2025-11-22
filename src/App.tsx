@@ -14,6 +14,10 @@ import Warehouse from "./pages/Warehouse";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import Landing from "./pages/Landing";
+
 
 const queryClient = new QueryClient();
 
@@ -24,7 +28,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/manager/login" element={<Login />} />
+          <Route path="/manager/signup" element={<Signup />} />
+          <Route path="/staff/login" element={<Login />} />
+          <Route path="/staff/signup" element={<Signup />} />
+
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products" element={<Products />} />
           <Route path="/receipts" element={<Receipts />} />
@@ -35,6 +44,9 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
